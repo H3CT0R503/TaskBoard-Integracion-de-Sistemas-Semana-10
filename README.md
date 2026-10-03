@@ -1,59 +1,109 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 💳 TaskBoard — Semana 10 (Validación y Form Requests)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+> Proyecto integrador de **Integración de Sistemas (CE-ISC019)** — el formulario "Nueva Transacción" aprende a rechazar datos inválidos.
 
-## About Laravel
+![Laravel](https://img.shields.io/badge/Laravel-11.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-Eloquent-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📖 Descripción
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+En la **Semana 10**, TaskBoard deja de confiar ciegamente en lo que recibe: se agrega **validación** al formulario "Nueva Transacción" y luego se traslada esa lógica a un **Form Request** dedicado. Abarca dos guías:
 
-## Learning Laravel
+- **Jueves** — Validación directa en el controlador con `$request->validate()` y mensajes de error en la vista.
+- **Viernes** — Migrar la validación a un **Form Request** (`GuardarTransaccionRequest`).
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## ✨ Características
 
-## Laravel Sponsors
+- ✅ Reglas de validación: `required`, `string`, `max`, `numeric`, `min`.
+- ✅ Mensajes de error personalizados en español.
+- ✅ Errores mostrados en la vista con `@error` y recuperación de datos con `old()`.
+- ✅ Form Request propio con `authorize()`, `rules()`, `messages()` y `attributes()`.
+- ✅ Controlador más limpio: la validación vive en su propia clase.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## 🛠️ Tecnologías
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+| Herramienta | Uso |
+|---|---|
+| **Laravel 11.x** | Framework principal |
+| **Form Requests** | Validación encapsulada |
+| **Blade** | Mostrar errores en el formulario |
+| **MySQL** | Base de datos |
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 📋 Requisitos
 
-## Code of Conduct
+- PHP **8.2+**, Composer y Laravel instalados
+- Proyecto de la Semana 9 funcionando (formulario "Nueva Transacción" que ya guarda datos)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## ⚙️ Instalación
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+git clone https://github.com/H3CT0R503/NOMBRE-DEL-REPO.git
+cd NOMBRE-DEL-REPO
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan serve
+```
 
-## License
+Crear el Form Request:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+php artisan make:request GuardarTransaccionRequest
+```
+
+---
+
+## 🕹️ Uso
+
+Visita `/comercios/{comercio}/transacciones/nueva` y prueba enviar el formulario:
+
+| Caso | Resultado esperado |
+|---|---|
+| Monto vacío o texto | Rechazado, con mensaje de error claro |
+| Nombre de cliente vacío | Rechazado, conservando lo ya escrito (`old()`) |
+| Datos válidos | Transacción guardada correctamente |
+
+---
+
+## 📂 Estructura (relevante)
+
+```text
+app/Http/Requests/GuardarTransaccionRequest.php   # authorize(), rules(), messages(), attributes()
+app/Http/Controllers/TransaccionController.php     # store() usa el Form Request
+resources/views/transacciones/create.blade.php     # @error + old()
+```
+
+---
+
+## 🧠 Conceptos aplicados
+
+- **Validación del lado del servidor:** nunca confiar en los datos del usuario.
+- **Reglas:** `required|numeric|min:0.01` para el monto, `required|string|max:255` para el nombre.
+- **`old()` y `@error`:** mejor experiencia de usuario al corregir errores.
+- **Form Request:** separar la validación del controlador (`authorize()` + `rules()`).
+- **`authorize()`:** responde "¿puede esta persona hacer esto?" (devuelve `true`/`false`).
+
+---
+
+## 👤 Autor
+
+**Hector Interiano**
+📚 Integración de Sistemas · Ciclo 02-2026
+🎓 UPED "Dr. Luis Alonso Aparicio" · Docente: Ing. Oscar Contreras
+
+---
+
+<p align="center">Hecho con 💙 y Laravel</p>
